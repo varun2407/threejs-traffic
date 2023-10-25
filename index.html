@@ -5,12 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Traffic</title>
     <style>
-        body { margin: 0; }
-    </style>
+        html, body {
+          background-color: #000000;
+          margin: 0;
+          padding: 0;
+          height: 100%;
+          overflow: hidden !important;
+        }
+      </style>
+
+    <script type="importmap">
+        {
+        "imports": {
+            "three": "https://unpkg.com/three@latest/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@latest/examples/jsm/"
+        }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from "three";
+        import Car from "./car.js"
+        
+        let scene, camera;
+
+        window.onload = () => {
+            scene = new THREE.Scene();
+
+            // Orthographic camera:
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            const cameraWidth = 150;
+            const cameraHeight = cameraWidth / aspectRatio;
+
+            const camera = new THREE.OrthographicCamera(
+                cameraWidth / -2, //left
+                cameraWidth / 2, //right
+                cameraHeight / 2, //top
+                cameraHeight / -2, //bottom
+                0, //near plane 
+                1000 //far plane
+            );
+
+            camera.position.set(200, -200, 300);
+            camera.up.set(0,0,1);
+            camera.lookAt(0, 0, 0);
+
+            // renderer
+            const renderer = new THREE.WebGLRenderer( {antialias: true} );
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+            
+            const playerCar = Car();
+            scene.add(playerCar);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight)
+
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+            dirLight.position.set(100, -300, 400);
+            // x,y,z coordinates for light. x is the lowest(front of the car is darkest.) z is the highest value (top of the car is brightest)
+            scene.add(dirLight);
+
+            // configure cube
+            var geometry = new THREE.BoxGeometry( 20, 20, 20 );
+            var material = new THREE.MeshStandardMaterial({ color: 0xffffff, wireframe: true });
+
+            var cube = new THREE.Mesh( geometry, material );
+
+            scene.add( cube );
+
+            var geometry_ip = new THREE.PlaneGeometry( 10000, 10000 );
+            var material_ip = new THREE.MeshBasicMaterial( {
+            visible: false
+            });
+
+            var invisible_plane = new THREE.Mesh( geometry_ip, material_ip );
+
+            scene.add( invisible_plane );
+
+            renderer.render( scene, camera );
+        }
+
+
+    </script>
 </head>
 <body>
-  <script type="module" src="main.js">
-  </script>
-    </script>
 </body>
 </html>
