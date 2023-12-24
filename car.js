@@ -7,6 +7,8 @@ export function Car(){
     new THREE.BoxGeometry(12,33,12),
     new THREE.MeshLambertMaterial({color: 0x333333 })
   );
+  backWheel.position.z = 6;
+  backWheel.position.x = -18;
   return car;
 }
 

@@ -64,15 +64,9 @@
             const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
             dirLight.position.set(100, -300, 400);
             // x,y,z coordinates for light. x is the lowest(front of the car is darkest.) z is the highest value (top of the car is brightest)
-            scene.add(dirLight);
+            scene.add(dirLight)
 
-            // configure cube
-            var geometry = new THREE.BoxGeometry( 20, 20, 20 );
-            var material = new THREE.MeshStandardMaterial({ color: 0xffffff, wireframe: true });
-
-            var cube = new THREE.Mesh( geometry, material );
-
-            scene.add( cube );
+            scene.add( playerCar );
 
             var geometry_ip = new THREE.PlaneGeometry( 10000, 10000 );
             var material_ip = new THREE.MeshBasicMaterial( {
@@ -84,6 +78,15 @@
             scene.add( invisible_plane );
 
             renderer.render( scene, camera );
+
+            function animate() {
+                requestAnimationFrame(animate);
+                playerCar.position.x += 1;
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
         }
 
 
